@@ -1,14 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
-export const ConfigContext = React.createContext()
+interface ConfigContextType{
+    summarize: boolean;
+    wordCount: number | null;
+}
 
-export function ConfigProvider( {children} ) {
-    const [summarize, setSummarize] = useState()
-    const [wordCount, setWordCount] = useState()
+const ConfigContextInitalValues: ConfigContextType = {
+    summarize: false,
+    wordCount: null,
+}
+
+interface Props{
+    children: React.ReactNode;
+}
+
+export const ConfigContext = React.createContext<ConfigContextType>(ConfigContextInitalValues)
+
+export const ConfigProvider = (props: Props) => {
+    const [summarize, setSummarize] = useState<ConfigContextType["summarize"]>(false)
+    const [wordCount, setWordCount] = useState<ConfigContextType["wordCount"]>(null)
     
     return (
         <ConfigContext.Provider value={{summarize, wordCount}}>
-            {children}
+            {props.children}
         </ConfigContext.Provider>
     )
 }
